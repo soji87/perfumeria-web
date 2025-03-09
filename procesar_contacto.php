@@ -1,16 +1,36 @@
 <?php
 // Verificamos si el formulario fue enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombre = htmlspecialchars($_POST["nombre"]); // Sanitizamos la entrada
-    $email = htmlspecialchars($_POST["email"]);
-    $mensaje = htmlspecialchars($_POST["mensaje"]);
+    // Captura los datos del formulario
+    $nombre = trim($_POST["nombre"]); // Sanitizamos la entrada
+    $email = trim($_POST["email"]);
+    $mensaje = trim($_POST["mensaje"]);
 
-    // Mostramos los datos (luego esto se enviará por email o se guardará en una BBDD)
-    echo "<h1>Mensaje Recibido</h1>";
-    echo "<p><strong>Nombre: </strong> $nombre</p>";
-    echo "<p><strong>Correo Electrónico: </strong> $email</p>";
-    echo "<p><strong>Mensaje: </strong> $mesaje</p>";
-}else{
-    echo "<h1>Error</h1><p>Acceso no permitido.</p>";
+    // Validaciones en el servidor
+    if (strlen($nombre) < 3 ) {
+        die("Error: El nombre debe tener al menos 3 caracteres.");
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        die("Error: Correo electrónico no valido.");
+    }
+
+    if (strlen($mensaje) < 10){
+        die("Error: El mensaje debe tener al menos 10 caracteres.");
+    }
+
+    // Formato del mensaje a guardar
+    $registro = "Nombre: $nombre | Email: $email | Mensaje: $mensaje" . PHP_EOL;
+
+    // Guardar en un archivo de texto (puede cambiarse a base de datos más adelante)
+    file_put_contents("mensaje.txt", $registro, FILE_APPEND);
+
+    // Redirigir a una página de confirmación
+    header("Location: contacto_exitoso.html");
+    exit();
+} else {
+    // Si se intenta acceder al script sin formulario, redirige al inicio
+    header("Location: contacto.html");
+    exit();
 }
 ?>
