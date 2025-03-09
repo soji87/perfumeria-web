@@ -10,22 +10,31 @@ document.addEventListener("DOMContentLoaded", function () {
         const email = document.getElementById("email").value.trim();
         const mensaje = document.getElementById("mensaje").value.trim();
 
+        const errorNombre = document.getElementById("error-nombre");
+        const errorEmail = document.getElementById("error-email");
+        const errorMensaje =document.getElementById("error-mensaje");
+
+        //Reiniciar mensaje de error
+        errorNombre.textContent = "";
+        errorEmail.textContent = "";
+        errorMensaje.textContent = "";
+
         // Validamos el nombre
         if (nombre.length < 3) {
-            alert("El nombre debe tener al menos 3 caracteres.");
+            errorNombre.textContent = "El nombre debe tener al menos 3 caracteres.";
             valido = false;
         }
 
         // Validamos el correo con una expresión regular
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            alert("Introduce un correo electrónico válido.");
+            errorEmail.textContent = "Introduce un correo electrónico válido.";
             valido = false;
         }
 
         // Validamos el mensaje
         if (mensaje.length < 10) {
-            alert("El mensaje debe tener al menos 10 caracteres.");
+            errorMensaje.textContent = "El mensaje debe tener al menos 10 caracteres.";
             valido = false;
         }
 
