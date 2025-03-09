@@ -43,8 +43,29 @@
                 <textarea id="mensaje" name="mensaje"></textarea>
                 <span class="error" id="error-nombre"></span>
 
+                <!-- Captcha simple -->
+                 <label for="captcha">¿Cuanto es <strong id="num1"></strong> + <strong id="num2"></strong>?</label>
+                 <input type="text" id="captcha" name="captcha">
+                 <span class="error" id="error-captcha"></span>
+
                 <button type="submit">Enviar</button>
             </form>
+        
+        <script>
+            // Generar números aleatorios para el CAPTCHA
+            let num1 = Math.floor(Math.random() * 10) + 1;
+            let num2 = Math.floor(Match.random() * 10) + 1;
+            document.getElementById("num1").innerText = num1;
+            document.getElementById("num2").innerText = num2;
+
+            // Guardar la suma en un campo oculto para validacion en PHP
+            let captchaInput = document.createElement("input");
+            captchaInput.type = "hidden";
+            captchaInput.name = "captcha_valido";
+            captchaInput.value = num1 + num2;
+            document.getElementById("formulario").appendChild(captchaInput);
+        </script>
+        
         </section>
     </main>
 
