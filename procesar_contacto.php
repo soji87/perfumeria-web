@@ -1,4 +1,7 @@
 <?php
+// Incluir el archivo de conexion
+require_once "conexion.php";
+
 // Verificamos si el formulario fue enviado con Post
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Función para limpiar los datos de entrada y prevenir inyecciones
@@ -29,30 +32,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Error: El mensaje debe tener al menos 10 caracteres.");
     }
 
-    // Evitar SPAM (ejemplo con una lista de palabras prohibidas)
-    $palabras_prohibidas = ["http://", "https://", "www.", "viagra", "casino"];
-    foreach ($palabras_prohibidas as $palabra) {
-        if (stripos($mensaje, $palabra) !== false){
-            die("Error: No se permiten mensajes con contenido sospechoso.");
-        }
-    }
-
     // Validación del CAPTCHA
     if ($captcha_usuario != $captcha_valido) {
         die("Error: El CAPTCHA no es correcto.");
     }
 
-    // Formato del mensaje a guardar
-    $registro = "Nombre: $nombre | Email: $email | Mensaje: $mensaje" . PHP_EOL;
+    // Preparar la consulta SQL para evitar inyecciones
+    $stmt = $conexion->prepare("INSERT INTO mensajes (nombre, email, mensaje) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $nombre, $email, $mensaje);
 
-    // Guardar en un archivo de texto (puede cambiarse a base de datos más adelante)
-    file_put_contents("mensaje.txt", $registro, FILE_APPEND);
+    // Ejecutar la consulta y verificar resultado
+    if ($stmt->execute()) {
+        header("Location: contacto_exitoso.html");
+        exit();
+    } else {
+        die("Error al guardar el mensaje: " . $stmt->error);
+    }
 
-    // Redirigir a una página de confirmación
-    header("Location: contacto_exitoso.html");
-    exit();
+    // Cerrar conexión
+    $stmt->close();
+    $conexion->close();
 } else {
-    // Si se intenta acceder al script sin formulario, redirige al inicio
     header("Location: contacto.html");
     exit();
 }
