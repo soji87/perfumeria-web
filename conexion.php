@@ -1,14 +1,16 @@
 <?php
-$sevidor = "localhost";
+$servidor = "localhost";
 $usuario = "root"; // Cambiar si tienes un usuario distinto en MYSQL
-$clave = ""; // Por defecto, en XAMPP no tiene contraseña
-$baseDatos = "perfumeria";
+$contraseña = ""; // Por defecto, en XAMPP no tiene contraseña
+$base_datos = "perfumeria_web";
 
 // Crear conexión
-$conexion = new mysqli($servidor, $usuario, $clave, $baseDatos);
+$conn = new mysqli($servidor, $usuario, $contraseña, $base_datos);
 
 // Comprobar conexión
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+} else {
+    echo "Conexión exitosa a la base de datos";
 }
 ?>
