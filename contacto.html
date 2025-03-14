@@ -48,24 +48,28 @@
                  <input type="text" id="captcha" name="captcha">
                  <span class="error" id="error-captcha"></span>
 
+                <!-- Campo oculto para la validación -->
+                <input type="hidden" id="captcha_valido" name="captcha_valido">
+
                 <button type="submit">Enviar</button>
             </form>
         
-        <script>
-            // Generar números aleatorios para el CAPTCHA
-            let num1 = Math.floor(Math.random() * 10) + 1;
-            let num2 = Math.floor(Match.random() * 10) + 1;
-            document.getElementById("num1").innerText = num1;
-            document.getElementById("num2").innerText = num2;
+            <script>
+                // Generar números aleatorios para el CAPTCHA
+                let num1 = Math.floor(Math.random() * 10) + 1;
+                let num2 = Math.floor(Math.random() * 10) + 1;
+                
+                // Mostrar los números en la etiqueta
+                document.getElementById("num1").innerText = num1;
+                document.getElementById("num2").innerText = num2;
 
-            // Guardar la suma en un campo oculto para validacion en PHP
-            let captchaInput = document.createElement("input");
-            captchaInput.type = "hidden";
-            captchaInput.name = "captcha_valido";
-            captchaInput.value = num1 + num2;
-            document.getElementById("formulario").appendChild(captchaInput);
-        </script>
-        
+                // Guardar la suma en un campo oculto para validación en PHP
+                let captchaInput = document.createElement("input");
+                captchaInput.type = "hidden";
+                captchaInput.name = "captcha_valido";
+                captchaInput.value = num1 + num2;
+                document.getElementById("formulario").appendChild(captchaInput);
+            </script>
         </section>
     </main>
 

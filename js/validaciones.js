@@ -9,15 +9,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const nombre = document.getElementById("nombre").value.trim();
         const email = document.getElementById("email").value.trim();
         const mensaje = document.getElementById("mensaje").value.trim();
+        const captcha = grecaptcha.getResponse();
 
         const errorNombre = document.getElementById("error-nombre");
         const errorEmail = document.getElementById("error-email");
-        const errorMensaje =document.getElementById("error-mensaje");
+        const errorMensaje = document.getElementById("error-mensaje");
+        const errorCaptcha = document.getElementById("error-captcha");
 
         //Reiniciar mensaje de error
         errorNombre.textContent = "";
         errorEmail.textContent = "";
         errorMensaje.textContent = "";
+        errorCaptcha.textContent = "";
 
         // Validamos el nombre
         if (nombre.length < 3) {
@@ -36,6 +39,23 @@ document.addEventListener("DOMContentLoaded", function () {
         if (mensaje.length < 10) {
             errorMensaje.textContent = "El mensaje debe tener al menos 10 caracteres.";
             valido = false;
+        }
+
+        // Validamos reCAPTCHA
+        if (captcha.length === 0) {
+            errorCaptcha.textContent = "Por favor, verifica que no eres un robot.";
+            valido = false;
+        } else {
+            //Agregar el captcha como un campo oculto en el formulario
+            let inputCaptcha = document.getElementById("captcha_valido");
+            if (!inputCaptcha) {
+                inputCaptcha = document.createElement("input");
+                inputCaptcha.type = "hidden";
+                inputCaptcha.name = "captcha_valido";
+                inputCaptcha.id = "captcha_valido";
+                formulario.appendChild(inputCaptcha);
+            }
+            inputCaptcha.value = captcha;
         }
 
         // Si alguna validación falla, evitamos que el formulario se envíe

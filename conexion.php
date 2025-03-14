@@ -5,11 +5,11 @@ $contraseña = ""; // Por defecto, en XAMPP no tiene contraseña
 $base_datos = "perfumeria_web";
 
 // Crear conexión
-$conn = new mysqli($servidor, $usuario, $contraseña, $base_datos);
+$conexion = new mysqli($servidor, $usuario, $contraseña, $base_datos);
 
 // Comprobar conexión
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
+if ($conexion->connect_error) {
+    die("❌ Error de conexión: " . $conexion->connect_error);
 } else {
     echo "Conexión exitosa a la base de datos";
 }

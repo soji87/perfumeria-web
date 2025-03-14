@@ -16,25 +16,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = limpiarDato($_POST["nombre"]); // Sanitizamos la entrada
     $email = limpiarDato($_POST["email"]);
     $mensaje = limpiarDato($_POST["mensaje"]);
-    $captcha_usuario = limpiarDato($_POST["captcha"]); // Respuesta del usuario
-    $captcha_valido = limpiarDato($_POST["captcha_valido"]); // Resultado correcto del CAPTCHA
+    $captcha_usuario = limpiarDato($_POST["captcha"] ?? "");
+    $captcha_valido = limpiarDato($_POST["captcha_valido"] ?? ""); // Respuesta del CAPTCHA
 
     // Validaciones en el servidor
     if (strlen($nombre) < 3 ) {
-        die("Error: El nombre debe tener al menos 3 caracteres.");
+        die("❌ Error: El nombre debe tener al menos 3 caracteres.");
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        die("Error: Correo electrónico no valido.");
+        die("❌ Error: Correo electrónico no valido.");
     }
 
     if (strlen($mensaje) < 10){
-        die("Error: El mensaje debe tener al menos 10 caracteres.");
+        die("❌ Error: El mensaje debe tener al menos 10 caracteres.");
     }
 
     // Validación del CAPTCHA
     if ($captcha_usuario != $captcha_valido) {
-        die("Error: El CAPTCHA no es correcto.");
+        die("❌ Error: El CAPTCHA no es correcto.");
     }
 
     // Preparar la consulta SQL para evitar inyecciones
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: contacto_exitoso.html");
         exit();
     } else {
-        die("Error al guardar el mensaje: " . $stmt->error);
+        die("❌ Error al guardar el mensaje: " . $stmt->error);
     }
 
     // Cerrar conexión
